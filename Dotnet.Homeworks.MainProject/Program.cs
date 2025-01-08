@@ -1,7 +1,9 @@
 using Dotnet.Homeworks.Data.Extensions;
+using Dotnet.Homeworks.DataAccess.Extensions;
 using Dotnet.Homeworks.MainProject.Configuration;
 using Dotnet.Homeworks.MainProject.Services;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Masstransit;
+using Dotnet.Homeworks.MainProject.ServicesExtensions.Mediatr;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ var rabbitMqConfig = builder.Configuration.GetSection(nameof(RabbitMqConfig)).Ge
 builder.Services.AddMasstransitRabbitMq(rabbitMqConfig!);
 
 builder.Services.AddDataLayer(builder.Configuration);
+
+builder.Services.AddMediatR();
+builder.Services.AddDataAccess(builder.Configuration);
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
