@@ -1,4 +1,5 @@
-﻿using Dotnet.Homeworks.MainProject.Dto;
+﻿using Dotnet.Homeworks.Domain.Entities;
+using Dotnet.Homeworks.MainProject.Dto;
 using Dotnet.Homeworks.Shared.MessagingContracts.Email;
 
 namespace Dotnet.Homeworks.MainProject.Services;
@@ -12,12 +13,15 @@ public class RegistrationService : IRegistrationService
         _communicationService = communicationService;
     }
 
-    public async Task RegisterAsync(RegisterUserDto userDto)
+    public async Task RegisterAsync(RegisterUserDto userDto, CancellationToken cancellationToken)
     {
-        // pretending we have some complex logic here
-        await Task.Delay(100);
+        await Task.Delay(100, cancellationToken);
         
-        // publish message to a queue
-        await _communicationService.SendEmailAsync(new SendEmail("", "", "", ""));
+        await _communicationService.SendEmailAsync(new SendEmail(
+            userDto.Name,
+            userDto.Email,
+            "Registration",
+            "Registration was successful"),
+            cancellationToken);
     }
 }
