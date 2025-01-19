@@ -1,8 +1,8 @@
-﻿using Dotnet.Homeworks.Mailing.API.Consumers;
+﻿using Dotnet.Homeworks.Infrastructure.Dto;
+using Dotnet.Homeworks.Infrastructure.Services;
+using Dotnet.Homeworks.Mailing.API.Consumers;
 using Dotnet.Homeworks.Mailing.API.Helpers;
 using Dotnet.Homeworks.Mailing.API.Services;
-using Dotnet.Homeworks.MainProject.Dto;
-using Dotnet.Homeworks.MainProject.Services;
 using Dotnet.Homeworks.Shared.MessagingContracts.Email;
 using Dotnet.Homeworks.Tests.Shared.TestEnvironmentBuilder;
 using MassTransit;
@@ -49,7 +49,7 @@ public class MasstransitEnvironmentBuilder : TestEnvironmentBuilder<MasstransitE
             .Returns(_ => Harness!.Bus.Publish(testingEmailMessage));
 
         producerSubstitute.RegisterAsync(Arg.Any<RegisterUserDto>(), Arg.Any<CancellationToken>())
-            .Returns(_ => communicationServiceSubstitute.SendEmailAsync(testingEmailMessage, Arg.Any<CancellationToken>()));
+            .Returns(_ => communicationServiceSubstitute.SendEmailAsync(testingEmailMessage, default));
 
         _communicationService = communicationServiceSubstitute;
         _registrationService = producerSubstitute;

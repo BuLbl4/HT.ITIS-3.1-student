@@ -9,4 +9,5 @@ public interface IUserRepository
     Task DeleteUserByGuidAsync(Guid guid, CancellationToken cancellationToken);
     Task UpdateUserAsync(User user, CancellationToken cancellationToken);
     Task<Guid> InsertUserAsync(User user, CancellationToken cancellationToken);
+
 }

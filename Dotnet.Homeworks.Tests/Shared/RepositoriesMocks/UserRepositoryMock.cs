@@ -37,4 +37,10 @@ public class UserRepositoryMock : IUserRepository
     {
         return _users.TryAdd(user.Id, user) ? Task.FromResult(user.Id) : Task.FromException<Guid>(new Exception(""));
     }
+
+    public Task<bool> IsEmailUniqueAsync(string email, CancellationToken cancellationToken)
+    {
+        var isUnique = _users.Values.All(u => u.Email != email);
+        return Task.FromResult(isUnique);
+    }
 }
