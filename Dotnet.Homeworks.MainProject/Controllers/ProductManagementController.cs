@@ -11,7 +11,6 @@ namespace Dotnet.Homeworks.MainProject.Controllers;
 public class ProductManagementController : ControllerBase
 {
     private readonly IMediator _mediator;
-
     public ProductManagementController(IMediator mediator)
     {
         _mediator = mediator;
