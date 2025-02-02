@@ -19,7 +19,7 @@ public class UserManagementController : ControllerBase
     private readonly IMediator _mediator;
 
     private static readonly Counter<int> CreateUserCounter = new Meter("Dotnet.Homeworks.Meter")
-        .CreateCounter<int>("GetProductsHitCounter");
+        .CreateCounter<int>("CreateUserCounter");
     private static readonly ActivitySource ActivitySource = new("Dotnet.Homeworks.Source");
     
     public UserManagementController(IMediator mediator)
