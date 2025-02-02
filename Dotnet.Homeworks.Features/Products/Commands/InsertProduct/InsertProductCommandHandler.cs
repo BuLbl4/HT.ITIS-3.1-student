@@ -27,11 +27,14 @@ internal sealed class InsertProductCommandHandler : ICommandHandler<InsertProduc
             var productId = await _repository.InsertProductAsync(newProduct, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new Result<InsertProductDto>(new InsertProductDto(productId), true);
+            return ResultFactory.CreateResult<Result<InsertProductDto>>(
+                true,
+                value : new InsertProductDto(productId)
+            );
         }
         catch (Exception ex)
         {
-            return new Result<InsertProductDto>(null, false, ex.Message);
+            return ResultFactory.CreateResult<Result<InsertProductDto>>(false, error: ex.Message);
         }
     }
 }

@@ -20,11 +20,11 @@ internal sealed class GetProductsQueryHandler : IQueryHandler<GetProductsQuery, 
             var allProducts = await _repository.GetAllProductsAsync(cancellationToken);
             var allProductsDto = allProducts.Select(p => new GetProductDto(p.Id, p.Name));
 
-            return new Result<GetProductsDto>(new GetProductsDto(allProductsDto), true);
+            return ResultFactory.CreateResult<Result<GetProductsDto>>(true, new GetProductsDto(allProductsDto));
         }
         catch (Exception ex)
         {
-            return new Result<GetProductsDto>(null, false, ex.Message);
+            return ResultFactory.CreateResult<Result<GetProductsDto>>(false, ex.Message);
         }
     }
 }
