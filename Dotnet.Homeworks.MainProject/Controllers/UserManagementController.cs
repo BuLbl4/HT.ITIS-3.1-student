@@ -1,4 +1,6 @@
-﻿using Dotnet.Homeworks.Domain.Entities;
+﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using Dotnet.Homeworks.Domain.Entities;
 using Dotnet.Homeworks.Features.UserManagement.Commands.DeleteUserByAdmin;
 using Dotnet.Homeworks.Features.UserManagement.Queries.GetAllUsers;
 using Dotnet.Homeworks.Features.Users.Commands.CreateUser;
@@ -16,6 +18,10 @@ public class UserManagementController : ControllerBase
 {
     private readonly IMediator _mediator;
 
+    private static readonly Counter<int> CreateUserCounter = new Meter("Dotnet.Homeworks.Meter")
+        .CreateCounter<int>("GetProductsHitCounter");
+    private static readonly ActivitySource ActivitySource = new("Dotnet.Homeworks.Source");
+    
     public UserManagementController(IMediator mediator)
     {
         _mediator = mediator;
@@ -24,6 +30,8 @@ public class UserManagementController : ControllerBase
     [HttpPost("user")]
     public async Task<IActionResult> CreateUser(RegisterUserDto userDto, CancellationToken cancellationToken)
     {
+        using var activity = ActivitySource.StartActivity();
+        CreateUserCounter.Add(1);
         var result = await _mediator.Send(new CreateUserCommand(userDto.Name, userDto.Email), cancellationToken);
         return result.IsSuccess 
             ? Ok(result.Value)

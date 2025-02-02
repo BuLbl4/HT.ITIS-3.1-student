@@ -5,6 +5,7 @@ using Dotnet.Homeworks.MainProject.Configuration;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Infrastructure;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Masstransit;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Mediatr;
+using Dotnet.Homeworks.MainProject.ServicesExtensions.OpenTelemetry;
 using Dotnet.Homeworks.Shared.Dto;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -23,6 +24,10 @@ builder.Services.AddDataLayer(builder.Configuration);
 builder.Services.AddMediatR();
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.AddInfrastructure();
+
+builder.Services.Configure<OpenTelemetryConfig>(builder.Configuration.GetSection(nameof(OpenTelemetryConfig)));
+var openTelemetryConfig = builder.Configuration.GetSection(nameof(OpenTelemetryConfig)).Get<OpenTelemetryConfig>();
+builder.Services.AddOpenTelemetry(openTelemetryConfig!);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
